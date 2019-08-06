@@ -79,6 +79,21 @@ public class Gui extends JFrame {
 
     private void WybierzObraz2(ActionEvent e) {
         // TODO add your code here
+        final JFileChooser fc = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "JPG & PNG Images", "jpg", "png");
+        fc.setFileFilter(filter);
+        int returnVal = fc.showOpenDialog(this);
+
+        ImageIcon obraz = null;
+        try {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                obraz = new ImageIcon(fc.getSelectedFile().toURL());
+                getLabel2().setIcon(obraz);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void initComponents() {
