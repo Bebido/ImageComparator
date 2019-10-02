@@ -1,13 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Calendar;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jgoodies.forms.factories.*;
-import net.miginfocom.swing.*;
-import sun.swing.ImageIconUIResource;
 /*
  * Created by JFormDesigner on Tue Aug 06 21:11:40 CEST 2019
  */
@@ -18,7 +19,15 @@ import sun.swing.ImageIconUIResource;
  * @author unknown
  */
 public class Gui extends JFrame {
-    public Gui() {
+
+    private JButton button1;
+    private JButton button2;
+    private JButton compareButton;
+    private JLabel label1;
+    private JLabel label2;
+    private boolean imageOneChoosed = false;
+    private boolean imageSecondChoosed = false;
+    Gui() {
         initComponents();
     }
 
@@ -53,28 +62,21 @@ public class Gui extends JFrame {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 obraz = new ImageIcon(fc.getSelectedFile().toURL());
                 getLabel1().setIcon(obraz);
+                //////////////////////////////////////////
+                File img = new File(String.valueOf(fc.getSelectedFile()));
+                BufferedImage in = ImageIO.read(img);
+                BufferedImage newImage = new BufferedImage(
+                        in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_RGB);
+                newImage.getColorModel();
+                newImage.getPropertyNames();
+                int color = new Color(in.getRGB(321, 41)).getRed();
+
+
+                imageOneChoosed = true;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        /////////////////////////////
-
-//        JFileChooser chooser = new JFileChooser();
-//        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-//                "JPG & GIF Images", "jpg", "gif");
-//        chooser.setFileFilter(filter);
-//        int returnVal = chooser.showOpenDialog(parent);
-//        if(returnVal == JFileChooser.APPROVE_OPTION) {
-//            System.out.println("You chose to open this file: " +
-//                    chooser.getSelectedFile().getName());
-//        }
-
-//        try {
-//            Runtime.getRuntime().exec("explorer.exe /select," + "/");
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
     }
 
     private void WybierzObraz2(ActionEvent e) {
@@ -90,6 +92,7 @@ public class Gui extends JFrame {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 obraz = new ImageIcon(fc.getSelectedFile().toURL());
                 getLabel2().setIcon(obraz);
+                imageSecondChoosed = true;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -102,6 +105,8 @@ public class Gui extends JFrame {
         DefaultComponentFactory compFactory = DefaultComponentFactory.getInstance();
         button1 = new JButton();
         button2 = new JButton();
+        compareButton = new JButton();
+
         label1 = compFactory.createLabel("");
         label2 = compFactory.createLabel("");
 
@@ -119,6 +124,10 @@ public class Gui extends JFrame {
         //---- button2 ----
         button2.setText("Wybierz obraz");
         button2.addActionListener(e -> WybierzObraz2(e));
+
+        //---- compareButton ----
+        compareButton.setText("Porównaj");
+        compareButton.addActionListener(e -> PorownajObrazy(e));
 
         //---- label1 ----
         label1.setBorder(LineBorder.createBlackLineBorder());
@@ -143,7 +152,8 @@ public class Gui extends JFrame {
                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                             .addComponent(button2)
                             .addGap(10, 10, 10)))
-                    .addGap(93, 93, 93))
+                    .addGap(93, 93, 93)
+                .addComponent(compareButton))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
@@ -155,7 +165,8 @@ public class Gui extends JFrame {
                     .addGap(38, 38, 38)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(button1)
-                        .addComponent(button2))
+                        .addComponent(button2)
+                        .addComponent(compareButton))
                     .addGap(54, 54, 54))
         );
         setSize(600, 400);
@@ -163,11 +174,9 @@ public class Gui extends JFrame {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - unknown
-    private JButton button1;
-    private JButton button2;
-    private JLabel label1;
-    private JLabel label2;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
+    private void PorownajObrazy(ActionEvent e) {
+        if (imageOneChoosed && imageSecondChoosed) {
+            compareButton.setText("Kocik");
+        }
+    }
 }
