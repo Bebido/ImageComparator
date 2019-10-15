@@ -20,11 +20,11 @@ import com.jgoodies.forms.factories.*;
  */
 public class Gui extends JFrame {
 
-    private JButton button1;
-    private JButton button2;
-    private JButton compareButton;
-    private JLabel label1;
-    private JLabel label2;
+//    private JButton button1;
+//    private JButton button2;
+//    private JButton compareButton;
+//    private JLabel label1;
+//    private JLabel label2;
     private boolean imageOneChoosed = false;
     private boolean imageSecondChoosed = false;
     Gui() {
@@ -99,23 +99,35 @@ public class Gui extends JFrame {
         }
     }
 
+    public JButton getCompareButton() {
+        return compareButton;
+    }
+
+    public JTextArea getTextAreaWynik() {
+        return textAreaWynik;
+    }
+
+    private void compareActionPerformed(ActionEvent e) {
+        // TODO add your code here
+    }
+
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - unknown
         DefaultComponentFactory compFactory = DefaultComponentFactory.getInstance();
         button1 = new JButton();
         button2 = new JButton();
-        compareButton = new JButton();
-
         label1 = compFactory.createLabel("");
         label2 = compFactory.createLabel("");
+        compareButton = new JButton();
+        textAreaWynik = new JTextArea();
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setTitle("ImageComparator");
         setMinimumSize(new Dimension(600, 400));
-        Container contentPane = getContentPane();
+        var contentPane = getContentPane();
 
         //---- button1 ----
         button1.setText("Wybierz obraz");
@@ -125,15 +137,20 @@ public class Gui extends JFrame {
         button2.setText("Wybierz obraz");
         button2.addActionListener(e -> WybierzObraz2(e));
 
-        //---- compareButton ----
-        compareButton.setText("Porównaj");
-        compareButton.addActionListener(e -> PorownajObrazy(e));
-
         //---- label1 ----
         label1.setBorder(LineBorder.createBlackLineBorder());
 
         //---- label2 ----
         label2.setBorder(LineBorder.createBlackLineBorder());
+
+        //---- compareButton ----
+        compareButton.setText("Por\u00f3wnaj");
+        compareButton.addActionListener(e -> compareActionPerformed(e));
+
+        //---- textAreaWynik ----
+        textAreaWynik.setText("Wynik:");
+        textAreaWynik.setEditable(false);
+        textAreaWynik.setRows(1);
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -142,31 +159,42 @@ public class Gui extends JFrame {
                 .addGroup(contentPaneLayout.createSequentialGroup()
                     .addGap(86, 86, 86)
                     .addGroup(contentPaneLayout.createParallelGroup()
-                        .addComponent(label1, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addComponent(label1, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+                            .addGap(33, 33, 33)
+                            .addGroup(contentPaneLayout.createParallelGroup()
+                                .addComponent(compareButton)
+                                .addComponent(textAreaWynik)))
                         .addGroup(contentPaneLayout.createSequentialGroup()
                             .addGap(12, 12, 12)
                             .addComponent(button1)))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                     .addGroup(contentPaneLayout.createParallelGroup()
                         .addComponent(label2, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                             .addComponent(button2)
                             .addGap(10, 10, 10)))
-                    .addGap(93, 93, 93)
-                .addComponent(compareButton))
+                    .addGap(93, 93, 93))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
                 .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addContainerGap(65, Short.MAX_VALUE)
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(label1, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
-                    .addGap(38, 38, 38)
+                    .addGroup(contentPaneLayout.createParallelGroup()
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addContainerGap(65, Short.MAX_VALUE)
+                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(label2, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(label1, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
+                            .addGap(38, 38, 38))
+                        .addGroup(contentPaneLayout.createSequentialGroup()
+                            .addGap(99, 99, 99)
+                            .addComponent(compareButton)
+                            .addGap(27, 27, 27)
+                            .addComponent(textAreaWynik, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)))
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(button1)
-                        .addComponent(button2)
-                        .addComponent(compareButton))
+                        .addComponent(button2))
                     .addGap(54, 54, 54))
         );
         setSize(600, 400);
@@ -174,9 +202,19 @@ public class Gui extends JFrame {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
-    private void PorownajObrazy(ActionEvent e) {
-        if (imageOneChoosed && imageSecondChoosed) {
-            compareButton.setText("Kocik");
-        }
-    }
+//    private void PorownajObrazy(ActionEvent e) {
+//        if (imageOneChoosed && imageSecondChoosed) {
+//            compareButton.setText("Kocik");
+//        }
+//    }
+
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // Generated using JFormDesigner Evaluation license - unknown
+    private JButton button1;
+    private JButton button2;
+    private JLabel label1;
+    private JLabel label2;
+    private JButton compareButton;
+    private JTextArea textAreaWynik;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

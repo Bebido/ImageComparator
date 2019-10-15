@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "7.0.0.3.238" Java: "11.0.2" encoding: "UTF-8"
+JFDML JFormDesigner: "7.0.0.6.255" Java: "11.0.4" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -7,8 +7,8 @@ new FormModel {
 			"JavaCodeGenerator.defaultVariableGetter": true
 		}
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq l {space :p:86:p, par l {comp label1:::p:130:p, seq l {space :p:12:p, comp button1:::p::p}}, space ::145:x, par l {comp label2:::p:130:p, seq t {comp button2:::p::p, space :p:10:p}}, space :p:93:p}}"
-			"$verticalGroup": "par l {seq l {space ::65:x, par b {comp label2::b:p:174:p, comp label1::b:p:174:p}, space :p:38:p, par b {comp button1::b:p::p, comp button2::b:p::p}, space :p:54:p}}"
+			"$horizontalGroup": "par l {seq l {space :p:86:p, par l {seq {comp label1:::p:130:p, space :p:33:p, par l {comp button3:::p::p, comp textArea1:::::x}}, seq l {space :p:12:p, comp button1:::p::p}}, space ::28:x, par l {comp label2:::p:130:p, seq t {comp button2:::p::p, space :p:10:p}}, space :p:93:p}}"
+			"$verticalGroup": "par l {seq l {par l {seq {space ::65:x, par b {comp label2::b:p:174:p, comp label1::b:p:174:p}, space :p:38:p}, seq l {space :p:99:p, comp button3:::p::p, space :p:27:p, comp textArea1:::p:25:p, space ::96:x}}, par b {comp button1::b:p::p, comp button2::b:p::p}, space :p:54:p}}"
 		} ) {
 			name: "this"
 			"$sizePolicy": 1
@@ -34,6 +34,23 @@ new FormModel {
 			add( new FormComponent( "com.jformdesigner.designer.wrapper.JGoodiesFormsLabel" ) {
 				name: "label2"
 				"border": #LineBorder0
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "button3"
+				"text": "Porównaj"
+				auxiliary() {
+					"JavaCodeGenerator.variableName": "compareButton"
+				}
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "compareActionPerformed", true ) )
+			} )
+			add( new FormComponent( "javax.swing.JTextArea" ) {
+				name: "textArea1"
+				"text": "Wynik:"
+				"editable": false
+				"rows": 1
+				auxiliary() {
+					"JavaCodeGenerator.variableName": "textAreaWynik"
+				}
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
