@@ -1,14 +1,16 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
-import com.jgoodies.forms.factories.*;
+import static java.lang.Math.sqrt;
+
 /**
  * @author unknown
  */
@@ -106,9 +108,62 @@ public class Gui extends JFrame {
 
     private void compareActionPerformed(ActionEvent e) {
         if (imageOneChoosed && imageSecondChoosed) {
-            String tmp = String.valueOf(imageFirst.getHeight() + "  " + imageSecond.getHeight());
-            textAreaWynik.setText("Wynik: " + tmp);
+
+            Image tmpImage = imageFirst.getScaledInstance(400, 400, Image.SCALE_DEFAULT);
+            imageFirst = toBufferedImage(tmpImage);
+            tmpImage = imageSecond.getScaledInstance(400, 400, Image.SCALE_DEFAULT);
+            imageSecond = toBufferedImage(tmpImage);
+
+            Double difference = 0d;
+
+            for (int i = 0; i < imageFirst.getWidth(); i++) {
+                for (int j = 0; j < imageFirst.getHeight(); j++) {
+                    difference = difference + getDifferecne(imageFirst, imageSecond, i, j);
+                }
+            }
+            difference = difference / 160000;
+            difference = difference / 4.41;
+            difference = 100 - difference;
+            textAreaWynik.setText("Wynik: " + difference + "%");
         }
+    }
+
+    private Double getDifferecne(BufferedImage imageFirst, BufferedImage imageSecond, int i, int j) {
+        int red1 = new Color(imageFirst.getRGB(i, j)).getRed();
+        int green1 = new Color(imageFirst.getRGB(i, j)).getGreen();
+        int blue1 = new Color(imageFirst.getRGB(i, j)).getBlue();
+        int red2 = new Color(imageSecond.getRGB(i, j)).getRed();
+        int green2 = new Color(imageSecond.getRGB(i, j)).getGreen();
+        int blue2 = new Color(imageSecond.getRGB(i, j)).getBlue();
+
+        Double r = (double) (red2 - red1);
+        Double g = (double) (green2 - green1);
+        Double b = (double) (blue2 - blue1);
+
+        r = Math.pow(r, 2);
+        g = Math.pow(g, 2);
+        b = Math.pow(b, 2);
+
+        return sqrt(r + g + b);
+    }
+
+    private BufferedImage toBufferedImage(Image img)
+    {
+        if (img instanceof BufferedImage)
+        {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        // Return the buffered image
+        return bimage;
     }
 
     private void initComponents() {
