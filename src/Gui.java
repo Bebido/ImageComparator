@@ -54,14 +54,14 @@ public class Gui extends JFrame {
         fc.setFileFilter(filter);
         int returnVal = fc.showOpenDialog(this);
 
-        ImageIcon obraz = null;
         try {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                obraz = new ImageIcon(fc.getSelectedFile().toURL());
-                getLabel1().setIcon(obraz);
-                //////////////////////////////////////////
                 File img = new File(String.valueOf(fc.getSelectedFile()));
                 imageFirst = ImageIO.read(img);
+                Image icon = ImageIO.read(img);
+                icon = icon.getScaledInstance(130, 174, Image.SCALE_DEFAULT);
+                ImageIcon obraz = new ImageIcon(icon);
+                getLabel1().setIcon(obraz);
 //                BufferedImage newImage = new BufferedImage(
 //                        in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_RGB);
 //                newImage.getColorModel();
@@ -81,13 +81,14 @@ public class Gui extends JFrame {
         fc.setFileFilter(filter);
         int returnVal = fc.showOpenDialog(this);
 
-        ImageIcon obraz = null;
         try {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                obraz = new ImageIcon(fc.getSelectedFile().toURL());
-                getLabel2().setIcon(obraz);
                 File img = new File(String.valueOf(fc.getSelectedFile()));
                 imageSecond = ImageIO.read(img);
+                Image icon = ImageIO.read(img);
+                icon = icon.getScaledInstance(130, 174, Image.SCALE_DEFAULT);
+                ImageIcon obraz = new ImageIcon(icon);
+                getLabel2().setIcon(obraz);
                 imageSecondChoosed = true;
             }
         } catch (Exception ex) {
