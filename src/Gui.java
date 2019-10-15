@@ -2,31 +2,29 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Calendar;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jgoodies.forms.factories.*;
-/*
- * Created by JFormDesigner on Tue Aug 06 21:11:40 CEST 2019
- */
-
-
-
 /**
  * @author unknown
  */
 public class Gui extends JFrame {
 
-//    private JButton button1;
-//    private JButton button2;
-//    private JButton compareButton;
-//    private JLabel label1;
-//    private JLabel label2;
+    private JButton button1;
+    private JButton button2;
+    private JLabel label1;
+    private JLabel label2;
+    private JButton compareButton;
+    private JTextArea textAreaWynik;
     private boolean imageOneChoosed = false;
     private boolean imageSecondChoosed = false;
+    BufferedImage imageFirst;
+    BufferedImage imageSecond;
+
     Gui() {
         initComponents();
     }
@@ -48,7 +46,6 @@ public class Gui extends JFrame {
     }
 
     private void WybierzObraz1(ActionEvent e) {
-        // TODO add your code here
 
         //Create a file chooser
         final JFileChooser fc = new JFileChooser();
@@ -64,14 +61,12 @@ public class Gui extends JFrame {
                 getLabel1().setIcon(obraz);
                 //////////////////////////////////////////
                 File img = new File(String.valueOf(fc.getSelectedFile()));
-                BufferedImage in = ImageIO.read(img);
-                BufferedImage newImage = new BufferedImage(
-                        in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_RGB);
-                newImage.getColorModel();
-                newImage.getPropertyNames();
-                int color = new Color(in.getRGB(321, 41)).getRed();
-
-
+                imageFirst = ImageIO.read(img);
+//                BufferedImage newImage = new BufferedImage(
+//                        in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_RGB);
+//                newImage.getColorModel();
+//                newImage.getPropertyNames();
+                //int color = new Color(in.getRGB(321, 41)).getRed();
                 imageOneChoosed = true;
             }
         } catch (Exception ex) {
@@ -80,7 +75,6 @@ public class Gui extends JFrame {
     }
 
     private void WybierzObraz2(ActionEvent e) {
-        // TODO add your code here
         final JFileChooser fc = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "JPG & PNG Images", "jpg", "png");
@@ -92,6 +86,8 @@ public class Gui extends JFrame {
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 obraz = new ImageIcon(fc.getSelectedFile().toURL());
                 getLabel2().setIcon(obraz);
+                File img = new File(String.valueOf(fc.getSelectedFile()));
+                imageSecond = ImageIO.read(img);
                 imageSecondChoosed = true;
             }
         } catch (Exception ex) {
@@ -108,7 +104,10 @@ public class Gui extends JFrame {
     }
 
     private void compareActionPerformed(ActionEvent e) {
-        // TODO add your code here
+        if (imageOneChoosed && imageSecondChoosed) {
+            String tmp = String.valueOf(imageFirst.getHeight() + "  " + imageSecond.getHeight());
+            textAreaWynik.setText("Wynik: " + tmp);
+        }
     }
 
     private void initComponents() {
@@ -144,7 +143,7 @@ public class Gui extends JFrame {
         label2.setBorder(LineBorder.createBlackLineBorder());
 
         //---- compareButton ----
-        compareButton.setText("Por\u00f3wnaj");
+        compareButton.setText("Porównaj");
         compareButton.addActionListener(e -> compareActionPerformed(e));
 
         //---- textAreaWynik ----
@@ -155,66 +154,50 @@ public class Gui extends JFrame {
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
-            contentPaneLayout.createParallelGroup()
-                .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGap(86, 86, 86)
-                    .addGroup(contentPaneLayout.createParallelGroup()
+                contentPaneLayout.createParallelGroup()
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addComponent(label1, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
-                            .addGap(33, 33, 33)
-                            .addGroup(contentPaneLayout.createParallelGroup()
-                                .addComponent(compareButton)
-                                .addComponent(textAreaWynik)))
-                        .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addGap(12, 12, 12)
-                            .addComponent(button1)))
-                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                    .addGroup(contentPaneLayout.createParallelGroup()
-                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
-                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                            .addComponent(button2)
-                            .addGap(10, 10, 10)))
-                    .addGap(93, 93, 93))
+                                .addGap(86, 86, 86)
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                        .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addComponent(label1, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(33, 33, 33)
+                                                .addGroup(contentPaneLayout.createParallelGroup()
+                                                        .addComponent(compareButton)
+                                                        .addComponent(textAreaWynik)))
+                                        .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addGap(12, 12, 12)
+                                                .addComponent(button1)))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                                .addComponent(button2)
+                                                .addGap(10, 10, 10)))
+                                .addGap(93, 93, 93))
         );
         contentPaneLayout.setVerticalGroup(
-            contentPaneLayout.createParallelGroup()
-                .addGroup(contentPaneLayout.createSequentialGroup()
-                    .addGroup(contentPaneLayout.createParallelGroup()
+                contentPaneLayout.createParallelGroup()
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addContainerGap(65, Short.MAX_VALUE)
-                            .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(label2, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-                                .addComponent(label1, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
-                            .addGap(38, 38, 38))
-                        .addGroup(contentPaneLayout.createSequentialGroup()
-                            .addGap(99, 99, 99)
-                            .addComponent(compareButton)
-                            .addGap(27, 27, 27)
-                            .addComponent(textAreaWynik, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)))
-                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(button1)
-                        .addComponent(button2))
-                    .addGap(54, 54, 54))
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                        .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addContainerGap(65, Short.MAX_VALUE)
+                                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(label1, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
+                                                .addGap(38, 38, 38))
+                                        .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addGap(99, 99, 99)
+                                                .addComponent(compareButton)
+                                                .addGap(27, 27, 27)
+                                                .addComponent(textAreaWynik, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)))
+                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(button1)
+                                        .addComponent(button2))
+                                .addGap(54, 54, 54))
         );
         setSize(600, 400);
         setLocationRelativeTo(null);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
-
-//    private void PorownajObrazy(ActionEvent e) {
-//        if (imageOneChoosed && imageSecondChoosed) {
-//            compareButton.setText("Kocik");
-//        }
-//    }
-
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - unknown
-    private JButton button1;
-    private JButton button2;
-    private JLabel label1;
-    private JLabel label2;
-    private JButton compareButton;
-    private JTextArea textAreaWynik;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
