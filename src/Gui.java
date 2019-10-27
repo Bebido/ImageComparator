@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.text.DecimalFormat;
 
 import static java.lang.Math.sqrt;
 
@@ -121,11 +122,18 @@ public class Gui extends JFrame {
                     difference = difference + getDifferecne(imageFirst, imageSecond, i, j);
                 }
             }
-            difference = difference / 160000;
-            difference = difference / 4.41;
-            difference = 100 - difference;
-            textAreaWynik.setText("Wynik: " + difference + "%");
+
+            ;
+            textAreaWynik.setText("Wynik: " + resultToPercents(difference) + "%");
         }
+    }
+
+    private String resultToPercents(Double difference) {
+        difference = difference / 160000;
+        difference = difference / 4.41;
+        difference = 100 - difference;
+        DecimalFormat df = new DecimalFormat("#.00");
+        return df.format(difference);
     }
 
     private Double getDifferecne(BufferedImage imageFirst, BufferedImage imageSecond, int i, int j) {
