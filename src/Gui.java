@@ -62,14 +62,9 @@ public class Gui extends JFrame {
                 File img = new File(String.valueOf(fc.getSelectedFile()));
                 imageFirst = ImageIO.read(img);
                 Image icon = ImageIO.read(img);
-                icon = icon.getScaledInstance(130, 174, Image.SCALE_DEFAULT);
+                icon = icon.getScaledInstance(ConstWindow.DISPLAY_IMAGE_WIDTH, ConstWindow.DISPLAY_IMAGE_HEIGHT, Image.SCALE_DEFAULT);
                 ImageIcon obraz = new ImageIcon(icon);
                 getLabel1().setIcon(obraz);
-//                BufferedImage newImage = new BufferedImage(
-//                        in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_RGB);
-//                newImage.getColorModel();
-//                newImage.getPropertyNames();
-                //int color = new Color(in.getRGB(321, 41)).getRed();
                 imageOneChoosed = true;
             }
         } catch (Exception ex) {
@@ -89,7 +84,7 @@ public class Gui extends JFrame {
                 File img = new File(String.valueOf(fc.getSelectedFile()));
                 imageSecond = ImageIO.read(img);
                 Image icon = ImageIO.read(img);
-                icon = icon.getScaledInstance(130, 174, Image.SCALE_DEFAULT);
+                icon = icon.getScaledInstance(ConstWindow.DISPLAY_IMAGE_WIDTH, ConstWindow.DISPLAY_IMAGE_HEIGHT, Image.SCALE_DEFAULT);
                 ImageIcon obraz = new ImageIcon(icon);
                 getLabel2().setIcon(obraz);
                 imageSecondChoosed = true;
@@ -110,9 +105,9 @@ public class Gui extends JFrame {
     private void compareActionPerformed(ActionEvent e) {
         if (imageOneChoosed && imageSecondChoosed) {
 
-            Image tmpImage = imageFirst.getScaledInstance(400, 400, Image.SCALE_DEFAULT);
+            Image tmpImage = imageFirst.getScaledInstance(ConstWindow.IMAGE_WIDTH, ConstWindow.IMAGE_HEIGHT, Image.SCALE_DEFAULT);
             imageFirst = toBufferedImage(tmpImage);
-            tmpImage = imageSecond.getScaledInstance(400, 400, Image.SCALE_DEFAULT);
+            tmpImage = imageSecond.getScaledInstance(ConstWindow.IMAGE_WIDTH, ConstWindow.IMAGE_HEIGHT, Image.SCALE_DEFAULT);
             imageSecond = toBufferedImage(tmpImage);
 
             Double difference = 0d;
@@ -129,7 +124,7 @@ public class Gui extends JFrame {
     }
 
     private String resultToPercents(Double difference) {
-        difference = difference / 160000;
+        difference = difference / (ConstWindow.IMAGE_HEIGHT * ConstWindow.IMAGE_WIDTH);
         difference = difference / 4.41;
         difference = 100 - difference;
         DecimalFormat df = new DecimalFormat("#.00");
@@ -189,7 +184,7 @@ public class Gui extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setTitle("ImageComparator");
-        setMinimumSize(new Dimension(600, 400));
+        setMinimumSize(new Dimension(ConstWindow.WINDOW_WIDTH, ConstWindow.WINDOW_HEIGHT));
         var contentPane = getContentPane();
 
         //---- button1 ----
@@ -223,7 +218,7 @@ public class Gui extends JFrame {
                                 .addGap(86, 86, 86)
                                 .addGroup(contentPaneLayout.createParallelGroup()
                                         .addGroup(contentPaneLayout.createSequentialGroup()
-                                                .addComponent(label1, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(label1, GroupLayout.PREFERRED_SIZE, ConstWindow.DISPLAY_IMAGE_WIDTH, GroupLayout.PREFERRED_SIZE)
                                                 .addGap(33, 33, 33)
                                                 .addGroup(contentPaneLayout.createParallelGroup()
                                                         .addComponent(compareButton)
@@ -233,7 +228,7 @@ public class Gui extends JFrame {
                                                 .addComponent(button1)))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                                 .addGroup(contentPaneLayout.createParallelGroup()
-                                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, ConstWindow.DISPLAY_IMAGE_WIDTH, GroupLayout.PREFERRED_SIZE)
                                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                                                 .addComponent(button2)
                                                 .addGap(10, 10, 10)))
@@ -246,8 +241,8 @@ public class Gui extends JFrame {
                                         .addGroup(contentPaneLayout.createSequentialGroup()
                                                 .addContainerGap(65, Short.MAX_VALUE)
                                                 .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(label1, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
+                                                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, ConstWindow.DISPLAY_IMAGE_HEIGHT, GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(label1, GroupLayout.PREFERRED_SIZE, ConstWindow.DISPLAY_IMAGE_HEIGHT, GroupLayout.PREFERRED_SIZE))
                                                 .addGap(38, 38, 38))
                                         .addGroup(contentPaneLayout.createSequentialGroup()
                                                 .addGap(99, 99, 99)
@@ -260,7 +255,7 @@ public class Gui extends JFrame {
                                         .addComponent(button2))
                                 .addGap(54, 54, 54))
         );
-        setSize(600, 400);
+        setSize(ConstWindow.WINDOW_WIDTH, ConstWindow.WINDOW_HEIGHT);
         setLocationRelativeTo(null);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
