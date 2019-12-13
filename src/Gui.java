@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import static java.lang.Math.sqrt;
 
@@ -52,8 +53,7 @@ public class Gui extends JFrame {
 
         //Create a file chooser
         final JFileChooser fc = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "JPG & PNG Images", "jpg", "png");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
         fc.setFileFilter(filter);
         int returnVal = fc.showOpenDialog(this);
 
@@ -94,16 +94,10 @@ public class Gui extends JFrame {
         }
     }
 
-    public JButton getCompareButton() {
-        return compareButton;
-    }
-
-    public JTextArea getTextAreaWynik() {
-        return textAreaWynik;
-    }
-
     private void compareActionPerformed(ActionEvent e) {
         if (imageOneChoosed && imageSecondChoosed) {
+
+            ArrayList<ImageCordinates> coordinates = generateCoordinates();
 
             Image tmpImage = imageFirst.getScaledInstance(ConstWindow.IMAGE_WIDTH, ConstWindow.IMAGE_HEIGHT, Image.SCALE_DEFAULT);
             imageFirst = toBufferedImage(tmpImage);
@@ -111,33 +105,55 @@ public class Gui extends JFrame {
             imageSecond = toBufferedImage(tmpImage);
 
             Double difference = 0d;
+            Integer numberOfCompares = 0;
 
-            for (int i = 0; i < imageFirst.getWidth(); i++) {
-                for (int j = 0; j < imageFirst.getHeight(); j++) {
-                    difference = difference + getDifferecne(imageFirst, imageSecond, i, j);
+            for (ImageCordinates coordinate : coordinates) {
+                for (int x = coordinate.getStartX(); x < coordinate.getStopX(); x++) {
+                    for (int y = coordinate.getStartY(); y < coordinate.getStopY(); y++) {
+                        difference = difference + getDifferecne(imageFirst, imageSecond, x, y);
+                        numberOfCompares++;
+                    }
                 }
             }
 
-            ;
-            textAreaWynik.setText("Wynik: " + resultToPercents(difference) + "%");
+            textAreaWynik.setText("Wynik: " + resultToPercents(difference, numberOfCompares) + "%");
         }
     }
 
-    private String resultToPercents(Double difference) {
-        difference = difference / (ConstWindow.IMAGE_HEIGHT * ConstWindow.IMAGE_WIDTH);
+    private ArrayList<ImageCordinates> generateCoordinates() {
+        ArrayList<ImageCordinates> cordinates = new ArrayList<>(); //410 470
+        cordinates.add(new ImageCordinates(80, 150, 80, 150));
+        cordinates.add(new ImageCordinates(300, 370, 80, 150));
+        cordinates.add(new ImageCordinates(530, 610, 80, 150));
+        cordinates.add(new ImageCordinates(750, 830, 80, 150));
+        cordinates.add(new ImageCordinates(980, 1060, 80, 150));
+        cordinates.add(new ImageCordinates(1200, 1230, 80, 150));
+        cordinates.add(new ImageCordinates(80, 150, 410, 470));
+        cordinates.add(new ImageCordinates(300, 370, 410, 470));
+        cordinates.add(new ImageCordinates(530, 610, 410, 470));
+        cordinates.add(new ImageCordinates(750, 830, 410, 470));
+        cordinates.add(new ImageCordinates(980, 1060, 410, 470));
+        cordinates.add(new ImageCordinates(1200, 1230, 410, 470));
+        cordinates.add(new ImageCordinates(510, 640, 650, 700));
+
+        return cordinates;
+    }
+
+    private String resultToPercents(Double difference, Integer numberOfCompares) {
+        difference = difference / numberOfCompares;
         difference = difference / 4.41;
         difference = 100 - difference;
         DecimalFormat df = new DecimalFormat("#.00");
         return df.format(difference);
     }
 
-    private Double getDifferecne(BufferedImage imageFirst, BufferedImage imageSecond, int i, int j) {
-        int red1 = new Color(imageFirst.getRGB(i, j)).getRed();
-        int green1 = new Color(imageFirst.getRGB(i, j)).getGreen();
-        int blue1 = new Color(imageFirst.getRGB(i, j)).getBlue();
-        int red2 = new Color(imageSecond.getRGB(i, j)).getRed();
-        int green2 = new Color(imageSecond.getRGB(i, j)).getGreen();
-        int blue2 = new Color(imageSecond.getRGB(i, j)).getBlue();
+    private Double getDifferecne(BufferedImage imageFirst, BufferedImage imageSecond, int x, int y) {
+        int red1 = new Color(imageFirst.getRGB(x, y)).getRed();
+        int green1 = new Color(imageFirst.getRGB(x, y)).getGreen();
+        int blue1 = new Color(imageFirst.getRGB(x, y)).getBlue();
+        int red2 = new Color(imageSecond.getRGB(x, y)).getRed();
+        int green2 = new Color(imageSecond.getRGB(x, y)).getGreen();
+        int blue2 = new Color(imageSecond.getRGB(x, y)).getBlue();
 
         Double r = (double) (red2 - red1);
         Double g = (double) (green2 - green1);
