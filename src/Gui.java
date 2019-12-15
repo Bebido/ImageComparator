@@ -97,54 +97,39 @@ public class Gui extends JFrame {
     private void compareActionPerformed(ActionEvent e) {
         if (imageOneChoosed && imageSecondChoosed) {
 
-            ArrayList<ImageCordinates> coordinates = generateCoordinates();
+            DecimalFormat df = new DecimalFormat("#.00");
+            ArrayList<ColourProperties> colourProperties = ColourProperties.generateCoordinates();
 
             Image tmpImage = imageFirst.getScaledInstance(ConstWindow.IMAGE_WIDTH, ConstWindow.IMAGE_HEIGHT, Image.SCALE_DEFAULT);
             imageFirst = toBufferedImage(tmpImage);
             tmpImage = imageSecond.getScaledInstance(ConstWindow.IMAGE_WIDTH, ConstWindow.IMAGE_HEIGHT, Image.SCALE_DEFAULT);
             imageSecond = toBufferedImage(tmpImage);
 
-            Double difference = 0d;
-            Integer numberOfCompares = 0;
+            double percentageResult = 0;
 
-            for (ImageCordinates coordinate : coordinates) {
-                for (int x = coordinate.getStartX(); x < coordinate.getStopX(); x++) {
-                    for (int y = coordinate.getStartY(); y < coordinate.getStopY(); y++) {
+            for (ColourProperties colour : colourProperties) {
+                Integer numberOfCompares = 0;
+                double difference = 0;
+
+                for (int x = colour.getStartX(); x < colour.getStopX(); x++) {
+                    for (int y = colour.getStartY(); y < colour.getStopY(); y++) {
                         difference = difference + getDifferecne(imageFirst, imageSecond, x, y);
                         numberOfCompares++;
                     }
                 }
+                percentageResult = percentageResult + resultToPercents(difference, numberOfCompares);
+                textAreaWynik.append(colour.getColour() + ": " + df.format(resultToPercents(difference, numberOfCompares)) + "%\n");
             }
 
-            textAreaWynik.setText("Wynik: " + resultToPercents(difference, numberOfCompares) + "%");
+            textAreaWynik.append("Wynik: " + df.format(percentageResult / 7) + "%");
         }
     }
 
-    private ArrayList<ImageCordinates> generateCoordinates() {
-        ArrayList<ImageCordinates> cordinates = new ArrayList<>(); //410 470
-        cordinates.add(new ImageCordinates(80, 150, 80, 150));
-        cordinates.add(new ImageCordinates(300, 370, 80, 150));
-        cordinates.add(new ImageCordinates(530, 610, 80, 150));
-        cordinates.add(new ImageCordinates(750, 830, 80, 150));
-        cordinates.add(new ImageCordinates(980, 1060, 80, 150));
-        cordinates.add(new ImageCordinates(1200, 1230, 80, 150));
-        cordinates.add(new ImageCordinates(80, 150, 410, 470));
-        cordinates.add(new ImageCordinates(300, 370, 410, 470));
-        cordinates.add(new ImageCordinates(530, 610, 410, 470));
-        cordinates.add(new ImageCordinates(750, 830, 410, 470));
-        cordinates.add(new ImageCordinates(980, 1060, 410, 470));
-        cordinates.add(new ImageCordinates(1200, 1230, 410, 470));
-        cordinates.add(new ImageCordinates(510, 640, 650, 700));
-
-        return cordinates;
-    }
-
-    private String resultToPercents(Double difference, Integer numberOfCompares) {
+    private Double resultToPercents(Double difference, Integer numberOfCompares) {
         difference = difference / numberOfCompares;
         difference = difference / 4.41;
         difference = 100 - difference;
-        DecimalFormat df = new DecimalFormat("#.00");
-        return df.format(difference);
+        return difference;
     }
 
     private Double getDifferecne(BufferedImage imageFirst, BufferedImage imageSecond, int x, int y) {
@@ -166,15 +151,18 @@ public class Gui extends JFrame {
         return sqrt(r + g + b);
     }
 
-    private BufferedImage toBufferedImage(Image img)
-    {
-        if (img instanceof BufferedImage)
-        {
+    private BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
 
         // Create a buffered image with transparency
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bimage =
+                new BufferedImage(
+                        img.getWidth(null),
+                        img.getHeight(null),
+                        BufferedImage.TYPE_INT_ARGB
+                );
 
         // Draw the image on to the buffered image
         Graphics2D bGr = bimage.createGraphics();
@@ -222,9 +210,8 @@ public class Gui extends JFrame {
         compareButton.addActionListener(e -> compareActionPerformed(e));
 
         //---- textAreaWynik ----
-        textAreaWynik.setText("Wynik:");
         textAreaWynik.setEditable(false);
-        textAreaWynik.setRows(1);
+        textAreaWynik.setRows(8);
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
@@ -248,7 +235,7 @@ public class Gui extends JFrame {
                                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
                                                 .addComponent(button2)
                                                 .addGap(10, 10, 10)))
-                                .addGap(93, 93, 93))
+                                .addGap(86, 86, 86))
         );
         contentPaneLayout.setVerticalGroup(
                 contentPaneLayout.createParallelGroup()
@@ -261,10 +248,10 @@ public class Gui extends JFrame {
                                                         .addComponent(label1, GroupLayout.PREFERRED_SIZE, ConstWindow.DISPLAY_IMAGE_HEIGHT, GroupLayout.PREFERRED_SIZE))
                                                 .addGap(38, 38, 38))
                                         .addGroup(contentPaneLayout.createSequentialGroup()
-                                                .addGap(99, 99, 99)
+                                                .addGap(40, 40, 40)
                                                 .addComponent(compareButton)
                                                 .addGap(27, 27, 27)
-                                                .addComponent(textAreaWynik, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(textAreaWynik, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)))
                                 .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                         .addComponent(button1)
