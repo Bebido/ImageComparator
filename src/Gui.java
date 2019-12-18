@@ -53,7 +53,8 @@ public class Gui extends JFrame {
 
         //Create a file chooser
         final JFileChooser fc = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & PNG Images", "jpg", "png");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "JPG & PNG Images", "jpg", "png");
         fc.setFileFilter(filter);
         int returnVal = fc.showOpenDialog(this);
 
@@ -106,6 +107,7 @@ public class Gui extends JFrame {
             imageSecond = toBufferedImage(tmpImage);
 
             double percentageResult = 0;
+            textAreaWynik.setText("");
 
             for (ColourProperties colour : colourProperties) {
                 Integer numberOfCompares = 0;
